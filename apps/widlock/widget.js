@@ -1,11 +1,16 @@
-(function(){
-  if (!Bangle.isLocked) return; // bail out on old firmware
-  Bangle.on("lock", function(on) {
-    WIDGETS["lock"].width = Bangle.isLocked()?16:0;
-    Bangle.drawWidgets();
-  });
-  WIDGETS["lock"]={area:"tl",sortorder:10,width:Bangle.isLocked()?16:0,draw:function(w) {
-    if (Bangle.isLocked())
-      g.reset().drawImage(atob("DhABH+D/wwMMDDAwwMf/v//4f+H/h/8//P/z///f/g=="), w.x+1, w.y+4);
-  }};
-})()
+/* Simple clock that appears in the widget bar if no other clock
+is running. We update once per minute, but don't bother stopping
+if the */
+
+// don't show widget if we know we have a clock app running
+if (!Bangle.CLOCK) WIDGETS["wdclk"]={area:"tl",width:52/* g.stringWidth("00:00") */,draw:function() {
+  g.reset().setFontCustom(atob("AAAAAAAAAAIAAAQCAQAAAd0BgMBdwAAAAAAAdwAB0RiMRcAAAERiMRdwAcAQCAQdwAcERiMRBwAd0RiMRBwAAEAgEAdwAd0RiMRdwAcERiMRdwAFAAd0QiEQdwAdwRCIRBwAd0BgMBAAABwRCIRdwAd0RiMRAAAd0QiEQAAAAAAAAAA="), 32, atob("BgAAAAAAAAAAAAAAAAYCAAYGBgYGBgYGBgYCAAAAAAAABgYGBgYG"), 512+9);
+  var time = require("locale").time(new Date(),1);
+  g.drawString(time, this.x, this.y+3, true); // 5 * 6*2 = 60
+  // queue draw in one minute
+  if (this.drawTimeout) clearTimeout(this.drawTimeout);
+  this.drawTimeout = setTimeout(()=>{
+    this.drawTimeout = undefined;
+    this.draw();
+  }, 60000 - (Date.now() % 60000));
+}};
