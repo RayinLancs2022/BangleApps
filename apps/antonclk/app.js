@@ -126,7 +126,9 @@ function doColor() {
 
 // Actually draw the watch face
 function draw() {
-  var x = g.getWidth() / 2;
+  if(!Bangle.timeoff)
+  {
+    var x = g.getWidth() / 2;
   var y = g.getHeight() / 2 - (secondsMode !== "Never" ? 24 : (vectorFont ? 12 : 0));
   g.reset();
   /* This is to mark the widget areas during development.
@@ -203,6 +205,8 @@ function draw() {
       g.drawString(dowcwStr, x, y + (vectorFont ? 26 : 16));
     }
   }
+  }
+  
 
   // queue next draw
   queueDraw();
