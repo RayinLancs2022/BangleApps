@@ -1,13 +1,20 @@
 {
-  "id": "widlock",
-  "name": "Lock Widget",
-  "version": "0.06",
-  "description": "On devices with always-on display (Bangle.js 2) this displays lock icon whenever the display is locked",
-  "icon": "widget.png",
-  "type": "widget",
-  "tags": "widget,lock",
+  "id": "boot",
+  "name": "Bootloader",
+  "version": "0.58",
+  "description": "This is needed by Bangle.js to automatically load the clock, menu, widgets and settings",
+  "icon": "bootloader.png",
+  "type": "bootloader",
+  "tags": "tool,system",
   "supports": ["BANGLEJS","BANGLEJS2"],
   "storage": [
-    {"name":"widlock.wid.js","url":"widget.js"}
-  ]
+    {"name":".boot0","url":"boot0.js"},
+    {"name":".bootcde","url":"bootloader.js"},
+    {"name":"bootupdate.js","url":"bootupdate.js"},
+    {"name":"boot.settings.js","url":"settings.js"}
+  ],
+  "data":[
+    {"name":"boot.json"}
+  ],
+  "sortorder": -10
 }
