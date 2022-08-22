@@ -3,7 +3,8 @@
   var settings = Object.assign({
     secondsOnUnlock: false,
   }, require('Storage').readJSON(FILE, true) || {});
-
+  if (typeof settings.PASSWRGTIMES !== "string") settings.PASSWRGTIMES = "5"; // default value
+  if (typeof settings.PASSBRKTIMES !== "string") settings.PASSBRKTIMES = "10min"; // default value
   function writeSettings() {
     require('Storage').writeJSON(FILE, settings);
   }
@@ -41,6 +42,8 @@
         writeSettings();
       }
     },
+    "Max tries in 2 min": stringInSettings("PASSWRGTIMES", ["3","5","10"]),
+    "BLE lock time after failure": stringInSettings("PASSBRKTIMES", ["1min","3min","5min","10min"]),
     "Buzz on Connect": {
       value: (settings.buzzOnConnect !== undefined ? settings.buzzOnConnect : true),
       onchange: v => {
